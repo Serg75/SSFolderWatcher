@@ -29,7 +29,7 @@ public class FolderWatcher {
     private var files: [String: UInt] = [:]
 
     public init(callback: @escaping FolderWatcherCallback,
-         checkExtension: FolderWatcherCheckExtension? = nil) {
+                checkExtension: FolderWatcherCheckExtension? = nil) {
         
         self.eventsQueue = DispatchQueue(label: FolderWatcher.eventQueueName(),
                                          attributes: [])
@@ -73,6 +73,10 @@ public class FolderWatcher {
         disposeEventStream()
     }
 
+    public var isWatching: Bool {
+        return eventStream != nil
+    }
+    
     
     //MARK: - FSEvents callback function
 
@@ -98,16 +102,14 @@ public class FolderWatcher {
         var errors: [UInt: [String]] = [:]
         var singles: [UInt: String] = [:]
 
-        guard let paths = Unmanaged<NSArray>.fromOpaque(eventPaths).takeUnretainedValue() as? [String] else {
-            return
-        }
+        let paths = eventPaths.bindMemory(to: UnsafeMutablePointer<CChar>.self, capacity: numEvents)
 
         // debug
         print("FSEvent changes: \(numEvents)")
 
         // finding related events by file ID
         for i in 0..<numEvents {
-            let path = paths[i]
+            let path = String(cString: paths[i])
             let url = URL(fileURLWithPath: path)
             let name = url.lastPathComponent
 
