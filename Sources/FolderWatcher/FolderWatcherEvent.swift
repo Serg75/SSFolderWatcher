@@ -12,21 +12,36 @@ public enum FolderWatcherEventTypes: Int {
     case deleted
     case changed
     case renamed
+    
+    public var description: String {
+        switch self {
+        case .changed:
+            return "changed"
+        case .created:
+            return "created"
+        case .deleted:
+            return "deleted"
+        case .renamed:
+            return "renamed"
+        }
+    }
 }
 
-public class FolderWatcherEvent: NSObject {
-    let type: FolderWatcherEventTypes
-    let fileName: String
-    let fileNewName: String?
-    var fileID: UInt = 0
+public struct FolderWatcherEvent {
+    public let type: FolderWatcherEventTypes
+    public let fileName: String
+    public let fileNewName: String?
+    public let fileID: UInt
 
-    init(type: FolderWatcherEventTypes, fileName: String, fileNewName: String? = nil) {
+    // TODO: make demo init
+    public init(type: FolderWatcherEventTypes, fileID: UInt, fileName: String, fileNewName: String? = nil) {
         self.type = type
+        self.fileID = fileID
         self.fileName = fileName
         self.fileNewName = fileNewName
     }
 
-    public override var description: String {
+    public var description: String {
         let flagValue = description(for: type)
         if let fileNewName = fileNewName {
             return "\(flagValue): \(fileName) -> \(fileNewName)"
@@ -36,6 +51,7 @@ public class FolderWatcherEvent: NSObject {
     }
 
     private func description(for type: FolderWatcherEventTypes) -> String {
+        // TODO call enum
         switch type {
         case .changed:
             return "changed"
@@ -47,4 +63,8 @@ public class FolderWatcherEvent: NSObject {
             return "renamed"
         }
     }
+}
+
+extension FolderWatcherEvent: Hashable {
+    
 }

@@ -69,7 +69,7 @@ public class FolderWatcher {
         }
     }
 
-    func stopWatching() {
+    public func stopWatching() {
         disposeEventStream()
     }
 
@@ -217,22 +217,19 @@ public class FolderWatcher {
             if !fileDidExist && fileExists {
 
                 // file creation detected
-                let event = FolderWatcherEvent(type: .created, fileName: name)
-                event.fileID = fileID
+                let event = FolderWatcherEvent(type: .created, fileID: fileID, fileName: name)
                 outEvents.append(event)
 
             } else if fileDidExist && !fileExists {
 
                 // file deletion detected
-                let event = FolderWatcherEvent(type: .deleted, fileName: name)
-                event.fileID = fileID
+                let event = FolderWatcherEvent(type: .deleted, fileID: fileID, fileName: name)
                 outEvents.append(event)
 
             } else if fileDidExist && fileExists {
 
                 // file change detected
-                let event = FolderWatcherEvent(type: .changed, fileName: name)
-                event.fileID = fileID
+                let event = FolderWatcherEvent(type: .changed, fileID: fileID, fileName: name)
                 outEvents.append(event)
 
             } else {
@@ -332,6 +329,7 @@ public class FolderWatcher {
         }
 
         return FolderWatcherEvent(type: .renamed,
+                                  fileID: 0,
                                   fileName: firstExists ? secondName : firstName,
                                   fileNewName: firstExists ? firstName : secondName)
     }
