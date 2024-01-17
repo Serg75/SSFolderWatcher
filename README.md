@@ -33,11 +33,12 @@ try? folderWatcher.startWatching(url: directoryURL)
 
 // Stop watching
 folderWatcher.stopWatching()
+```
 
-Installation
+## Installation
 
 To integrate FolderWatcher into your Xcode project, add it as a Swift Package dependency using the URL of this repository.
 
-License
+## License
 
 FolderWatcher is available under the MIT license. See the LICENSE file for more details.
