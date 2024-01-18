@@ -380,8 +380,8 @@ public class FolderWatcher {
 
                 let supported = isSupportedFile(path)
                 if supported {
-                    let fileID = fileID(forFile: path)
-                    files[name] = fileID
+                    let id = fileID(forFile: path)
+                    files[name] = id
                 }
             }
 
