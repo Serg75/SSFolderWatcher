@@ -4,7 +4,7 @@ import XCTest
 final class FolderWatcherTests: XCTestCase {
     
     // Helper function to provide a unique test folder URL
-    func testFolderURL() -> URL {
+    func folderURL() -> URL {
         let documentsDirectory = FileManager.default.urls(
             for: .documentDirectory,
             in: .userDomainMask).first!
@@ -19,7 +19,7 @@ final class FolderWatcherTests: XCTestCase {
         super.tearDown()
         
         // Clean up test folder
-        let testFolderURL = testFolderURL()
+        let testFolderURL = folderURL()
         try? FileManager.default.removeItem(at: testFolderURL)
     }
 
@@ -32,7 +32,7 @@ final class FolderWatcherTests: XCTestCase {
         let folderWatcher = FolderWatcher(callback: { _ in })
         
         do {
-            try folderWatcher.startWatching(url: testFolderURL())
+            try folderWatcher.startWatching(url: folderURL())
         } catch {
             XCTFail("Failed to start watching: \(error)")
         }
@@ -52,7 +52,7 @@ final class FolderWatcherTests: XCTestCase {
             expectation.fulfill()
         }
         
-        let testFolder = testFolderURL()
+        let testFolder = folderURL()
         
         XCTAssertNoThrow(try folderWatcher.startWatching(url: testFolder))
         
@@ -75,7 +75,7 @@ final class FolderWatcherTests: XCTestCase {
             expectation.fulfill()
         }
 
-        let testFolder = testFolderURL()
+        let testFolder = folderURL()
 
         let filePath = testFolder.appendingPathComponent("testFile.txt").path
         FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
@@ -100,7 +100,7 @@ final class FolderWatcherTests: XCTestCase {
             expectation.fulfill()
         }
 
-        let testFolder = testFolderURL()
+        let testFolder = folderURL()
 
         let filePath = testFolder.appendingPathComponent("testFile.txt").path
         FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
@@ -126,7 +126,7 @@ final class FolderWatcherTests: XCTestCase {
             expectation.fulfill()
         }
 
-        let testFolder = testFolderURL()
+        let testFolder = folderURL()
 
         let originalFilePath = testFolder.appendingPathComponent("testFile.txt").path
         let newFilePath = testFolder.appendingPathComponent("renamedFile.txt").path
