@@ -27,13 +27,12 @@ public enum FolderWatcherEventTypes: Int {
     }
 }
 
-public struct FolderWatcherEvent {
+public struct FolderWatcherEvent: Hashable {
     public let type: FolderWatcherEventTypes
     public let fileName: String
     public let fileNewName: String?
     public let fileID: UInt
 
-    // TODO: make demo init
     public init(type: FolderWatcherEventTypes, fileID: UInt, fileName: String, fileNewName: String? = nil) {
         self.type = type
         self.fileID = fileID
@@ -42,29 +41,11 @@ public struct FolderWatcherEvent {
     }
 
     public var description: String {
-        let flagValue = description(for: type)
+        let flagValue = type.description
         if let fileNewName = fileNewName {
             return "\(flagValue): \(fileName) -> \(fileNewName)"
         } else {
             return "\(flagValue): \(fileName)"
         }
     }
-
-    private func description(for type: FolderWatcherEventTypes) -> String {
-        // TODO call enum
-        switch type {
-        case .changed:
-            return "changed"
-        case .created:
-            return "created"
-        case .deleted:
-            return "deleted"
-        case .renamed:
-            return "renamed"
-        }
-    }
-}
-
-extension FolderWatcherEvent: Hashable {
-    
 }
