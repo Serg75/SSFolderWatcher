@@ -9,7 +9,8 @@ import Foundation
 import AppKit
 import SSFolderWatcher
 
-struct GroupedEvent: Hashable {
+struct GroupedEvent: Hashable, Identifiable {
+    let id = UUID()
     let event: FolderWatcherEvent
     let isOddGroup: Bool
 }
